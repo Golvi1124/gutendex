@@ -2,11 +2,13 @@ import "./styles/App.css";
 import Home from "./pages/Home.jsx";
 import Favorites from "./pages/Favorites.jsx";
 import { Routes, Route } from "react-router-dom";
+import { BookProvider } from "./contexts/BookContext.jsx";
 import NavBar from "./components/NavBar.jsx";
+
 
 function App() {
   return (
-    <div>
+    <BookProvider>
       <NavBar />
 
       <main className="main-content">
@@ -15,7 +17,7 @@ function App() {
           <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </main>
-    </div>
+    </BookProvider>
   );
 }
 

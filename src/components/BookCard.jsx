@@ -1,8 +1,15 @@
 import "../styles/BookCard.css";
+import { useBookContext } from "../contexts/BookContext.jsx";
 
 export default function BookCard({ book }) {
-  function onFavoriteClick() {
-    alert("clicked");
+  const { isFavorite, addToFavorites, removeFromFavorites } = useBookContext();
+
+  const favorite = isFavorite(book.id); //checking if book is favorited
+
+  function onFavoriteClick(e) {
+    e.preventDefault();
+    if (favorite) removeFromFavorites(book.id);
+    else addToFavorites(book);
   }
 
   // image link + fallback image if imageUrl is missing.
@@ -15,7 +22,10 @@ export default function BookCard({ book }) {
       <div className="book-cover">
         <img src={imageUrl} alt={book.title} />
         <div className="book-overlay">
-          <button className="favorite-btn" onClick={onFavoriteClick}>
+          <button
+            className={'favorite-btn ${favorite ? "active" : ""}'}
+            onClick={onFavoriteClick}
+          >
             ❤️
           </button>
         </div>
