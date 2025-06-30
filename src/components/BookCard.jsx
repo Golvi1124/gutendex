@@ -19,14 +19,14 @@ export default function BookCard({ book }) {
 
   return (
     <div className="book-card">
-      <div className="book-cover">
+      <div className="book-poster">
         <img src={imageUrl} alt={book.title} />
         <div className="book-overlay">
           <button
-            className={'favorite-btn ${favorite ? "active" : ""}'}
+            className={`favorite-btn ${favorite ? "active" : ""}`}
             onClick={onFavoriteClick}
           >
-            ❤️
+            ♥
           </button>
         </div>
       </div>
