@@ -1,20 +1,47 @@
 import BookCard from "../components/BookCard.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getBooks, searchBooks } from "../services/api.js";
 import "../styles/Home.css";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [books, setBooks] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const books = [
-    { id: 1, title: "bookey king", authors: "kinkeyyy king" },
-    { id: 2, title: "ddras rfga", authors: "agdrf ferd" },
-    { id: 3, title: "3 stars", authors: "cosmoss explorer" },
-  ];
+  useEffect(() => {
+    const loadBooks = async () => {
+      try {
+        const books = await getBooks();
+        setBooks(books);
+      } catch (err) {
+        console.log(err); // if will be need to debug
+        setError("Failed to load books...");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBooks();
+  }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault(); // prevents default action = doesn't automatically refresh page after input
-    alert(searchQuery);
-    setSearchQuery("");
+    if (!searchQuery.trim()) return; // checking if no white spaces before continuing
+    if (loading) return; // doesn't allow new search if previous one still loading
+
+    setLoading(true); // show that loading searched items
+    try {
+      const searchResults = await searchBooks(searchQuery);
+      setBooks(searchResults);
+      setError(null);
+    } catch (err) {
+      console.log(err); // if will be need to debug
+      setError("Failed to search books...");
+    } finally {
+      setLoading(false);
+    }
+
+    setSearchQuery(""); // set serach box to empty when done
   };
 
   return (
@@ -32,14 +59,20 @@ export default function Home() {
         </button>
       </form>
 
-      <div className="books-grid">
-        {books.map(
-          (book) =>
-            book.title.toLowerCase().startsWith(searchQuery) && (
-              <BookCard book={book} key={book.id} />
-            )
-        )}
-      </div>
+      {error && <div className="error-message">{error}</div>}
+
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="books-grid">
+          {books.map(
+            (book) =>
+              book.title.toLowerCase().startsWith(searchQuery) && (
+                <BookCard book={book} key={book.id} />
+              )
+          )}
+        </div>
+      )}
     </div>
   );
 }
