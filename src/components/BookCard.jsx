@@ -1,5 +1,5 @@
 import "../styles/BookCard.css";
-import { useBookContext } from "../contexts/BookContext.jsx";
+import useBookContext from "../contexts/useBookContext.js";
 
 export default function BookCard({ book }) {
   const { isFavorite, addToFavorites, removeFromFavorites } = useBookContext();

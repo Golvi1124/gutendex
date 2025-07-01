@@ -1,5 +1,5 @@
 import "../styles/Favorites.css";
-import { useBookContext } from "../contexts/BookContext.jsx";
+import useBookContext from "../contexts/useBookContext.js";
 import BookCard from "../components/BookCard.jsx";
 
 export default function Favorites() {
