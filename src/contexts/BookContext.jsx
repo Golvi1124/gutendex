@@ -2,7 +2,8 @@
 
 import { createContext, useState, useEffect } from "react";
 
-export const BookContext = createContext();
+// context used for storing the user's favorite books
+const BookContext = createContext();
 
 //provide state to any of the components that are wrapped around it. giving specific functions or whatever when needed
 export const BookProvider = ({ children }) => {
@@ -45,3 +46,4 @@ export const BookProvider = ({ children }) => {
 
   return <BookContext.Provider value={value}>{children}</BookContext.Provider>;
 };
+export default BookContext;
